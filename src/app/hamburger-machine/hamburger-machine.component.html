@@ -1,0 +1,367 @@
+<div class="container">
+  <!-- Pantalla inicial - Selección de tipo -->
+  @if (showButtons) {
+    <div class="header">
+      <button 
+        class="option-button vegetariana" 
+        (click)="selectOption('vegetariana')">
+        VEGETARIANA
+      </button>
+      <button 
+        class="option-button carne" 
+        (click)="selectOption('carne')">
+        CARNE
+      </button>
+    </div>
+  }
+
+  <div class="main-content">
+    <!-- Pantalla de ingredientes -->
+    @if (showIngredients) {
+      <div class="ingredients-header">
+        <button class="back-button" (click)="goBackFromIngredients()">
+          ← Volver
+        </button>
+        <h2 class="ingredients-title">
+          Selecciona los ingredientes para tu hamburguesa {{ selectedType }}
+          @if (getSelectedIngredientsCount() > 0) {
+            <span class="selected-count">
+              ({{ getSelectedIngredientsCount() }} seleccionados)
+            </span>
+          }
+        </h2>
+      </div>
+
+      <div class="image-grid">
+        <!-- Columna izquierda - Ingredientes -->
+        <div class="left-column">
+          <div class="image-item" 
+               [class.selected]="isIngredientSelected('huevo')"
+               (click)="toggleIngredient('huevo')">
+            <img src="../huevo.jpg" alt="">
+            <div class="ingredient-name">Huevo</div> 
+            @if (isIngredientSelected('huevo')) {
+              <div class="selected-indicator">✓</div>
+            }
+          </div>
+          
+          <div class="image-item" 
+               [class.selected]="isIngredientSelected('pepino')"
+               (click)="toggleIngredient('pepino')">
+            <img src="../pepino.jpg" alt="Pepino">
+            <div class="ingredient-name">Pepino</div>
+            @if (isIngredientSelected('pepino')) {
+              <div class="selected-indicator">✓</div>
+            }
+          </div>
+          
+          <div class="image-item" 
+               [class.selected]="isIngredientSelected('fiambre')"
+               (click)="toggleIngredient('fiambre')">
+            <img src="../fiambre.jpg" alt="Fiambre">
+            <div class="ingredient-name">fiambre</div>
+            @if (isIngredientSelected('fiambre')) {
+              <div class="selected-indicator">✓</div>
+            }
+          </div>
+        </div>
+
+        <!-- Columna central - Hamburguesa -->
+        <div class="center-column">
+          <div class="image-item large burger-preview">
+            <img src="../hamburg.jpg" 
+                 alt="Hamburguesa {{ selectedType }}">
+            <div class="burger-type">{{ selectedType }}</div>
+          </div>
+        </div>
+
+        <!-- Columna derecha - Ingredientes -->
+        <div class="right-column">
+          <div class="image-item" 
+               [class.selected]="isIngredientSelected('tomate')"
+               (click)="toggleIngredient('tomate')">
+            <img src="../tomate.jpg" alt="tomate">
+            <div class="ingredient-name">tomate</div>
+            @if (isIngredientSelected('tomate')) {
+              <div class="selected-indicator">✓</div>
+            }
+          </div>
+          
+          <div class="image-item" 
+               [class.selected]="isIngredientSelected('queso')"
+               (click)="toggleIngredient('queso')">
+            <img src="../queso.jpg" alt="Queso">
+            <div class="ingredient-name">Queso</div>
+            @if (isIngredientSelected('queso')) {
+              <div class="selected-indicator">✓</div>
+            }
+          </div>
+          
+          <div class="image-item" 
+               [class.selected]="isIngredientSelected('cheluga')"
+               (click)="toggleIngredient('cheluga')">
+            <img src="../cheluga.jpg" alt="Cheluga">
+            <div class="ingredient-name">Lechuga</div>
+            @if (isIngredientSelected('cheluga')) {
+              <div class="selected-indicator">✓</div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Botones de navegación ingredientes -->
+      @if (canContinueFromIngredients()) {
+        <div class="continue-section">
+          <button class="continue-button" (click)="continueToAderezos()">
+            Continuar con {{ getSelectedIngredientsCount() }} ingredientes
+            <span class="arrow">→</span>
+          </button>
+        </div>
+      }
+
+      @if (!canContinueFromIngredients()) {
+        <div class="no-selection-message">
+          <p>Selecciona al menos un ingrediente para continuar</p>
+        </div>
+      }
+    }
+
+    <!-- Pantalla de aderezos -->
+    @if (showAderezos) {
+      <div class="ingredients-header">
+        <button class="back-button" (click)="goBackFromAderezos()">
+          ← Volver a ingredientes
+        </button>
+        <h2 class="ingredients-title">
+          Selecciona aderezos
+          @if (getSelectedAderezosCount() > 0) {
+            <span class="selected-count">
+              ({{ getSelectedAderezosCount() }} seleccionados)
+            </span>
+          }
+        </h2>
+      </div>
+
+      <div class="image-grid">
+        <!-- Columna izquierda - Aderezos -->
+        <div class="left-column">
+          <div class="image-item" 
+               [class.selected]="isAderezoSelected('mayo_extra')"
+               (click)="toggleAderezo('mayo_extra')">
+            <img src="../mayonesa.jpg" alt="Mayonesa Extra">
+            <div class="ingredient-name"></div>
+            @if (isAderezoSelected('mayo_extra')) {
+              <div class="selected-indicator">✓</div>
+            }
+          </div>
+          
+          <div class="image-item" 
+               [class.selected]="isAderezoSelected('ketchup_extra')"
+               (click)="toggleAderezo('ketchup_extra')">
+            <img src="../keshu.jpg" alt="Ketchup Extra">
+            <div class="ingredient-name"></div>
+            @if (isAderezoSelected('ketchup_extra')) {
+              <div class="selected-indicator">✓</div>
+            }
+          </div>
+          
+          <div class="image-item" 
+               [class.selected]="isAderezoSelected('mustard_extra')"
+               (click)="toggleAderezo('mustard_extra')">
+            <img src="../crema.jpg" alt="Mostaza Extra">
+            <div class="ingredient-name"></div>
+            @if (isAderezoSelected('mustard_extra')) {
+              <div class="selected-indicator">✓</div>
+            }
+          </div>
+        </div>
+
+        <!-- Columna central - Aderezos preview -->
+        <div class="center-column">
+          <div class="image-item large">
+            <img src="public/aderezos.jpg" 
+                 alt="Aderezos {{ selectedType }}">
+            <div class="burger-type">Aderezos</div>
+          </div>
+        </div>
+
+        <!-- Columna derecha - Más aderezos -->
+        <div class="right-column">
+          <div class="image-item" 
+               [class.selected]="isAderezoSelected('bbq_sauce')"
+               (click)="toggleAderezo('bbq_sauce')">
+            <img src="../mostaza.jpg" alt="Salsa BBQ">
+            <div class="ingredient-name"></div>
+            @if (isAderezoSelected('bbq_sauce')) {
+              <div class="selected-indicator">✓</div>
+            }
+          </div>
+          
+          <div class="image-item" 
+               [class.selected]="isAderezoSelected('ranch')"
+               (click)="toggleAderezo('ranch')">
+            <img src="../bbq.jpg" alt="Salsa Ranch">
+            <div class="ingredient-name"></div>
+            @if (isAderezoSelected('ranch')) {
+              <div class="selected-indicator">✓</div>
+            }
+          </div>
+          
+          <div class="image-item" 
+               [class.selected]="isAderezoSelected('chipotle')"
+               (click)="toggleAderezo('chipotle')">
+            <img src="../savora.jpg" alt="Salsa Chipotle">
+            <div class="ingredient-name"></div>
+            @if (isAderezoSelected('chipotle')) {
+              <div class="selected-indicator">✓</div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Botones de navegación aderezos -->
+      <div class="continue-section">
+        @if (canContinueFromAderezos()) {
+          <button class="continue-button" (click)="continueToBebidas()">
+            Continuar con {{ getSelectedAderezosCount() }} aderezos
+            <span class="arrow">→</span>
+          </button>
+        }
+        
+        <button class="continue-button skip-button" (click)="skipAderezos()">
+          Continuar sin aderezos
+          <span class="arrow">→</span>
+        </button>
+      </div>
+
+      @if (!canContinueFromAderezos()) {
+        <div class="no-selection-message">
+          <p>Puedes seleccionar aderezos o continuar sin ellos</p>
+        </div>
+      }
+    }
+
+    <!-- Pantalla de bebidas -->
+    @if (showBebidas) {
+      <div class="ingredients-header">
+        <button class="back-button" (click)="goBackFromBebidas()">
+          ← Volver
+        </button>
+        <h2 class="ingredients-title">
+          Selecciona bebidas
+          @if (getSelectedBebidasCount() > 0) {
+            <span class="selected-count">
+              ({{ getSelectedBebidasCount() }} seleccionadas)
+            </span>
+          }
+        </h2>
+      </div>
+
+      <div class="image-grid">
+        <!-- Columna izquierda - Bebidas -->
+        <div class="left-column">
+          <div class="image-item" 
+               [class.selected]="isBebidaSelected('coke')"
+               (click)="toggleBebida('coke')">
+            <img src="../cocacola.jpg" alt="Coca Cola">
+            <div class="ingredient-name"></div>
+            @if (isBebidaSelected('coke')) {
+              <div class="selected-indicator">✓</div>
+            }
+          </div>
+          
+          <div class="image-item" 
+               [class.selected]="isBebidaSelected('fanta')"
+               (click)="toggleBebida('fanta')">
+            <img src="../fnata.jpg" alt="Fanta">
+            <div class="ingredient-name"></div>
+            @if (isBebidaSelected('fanta')) {
+              <div class="selected-indicator">✓</div>
+            }
+          </div>
+          
+          <div class="image-item" 
+               [class.selected]="isBebidaSelected('sprite')"
+               (click)="toggleBebida('sprite')">
+            <img src="../sprite.jpg" alt="Sprite">
+            <div class="ingredient-name"></div>
+            @if (isBebidaSelected('sprite')) {
+              <div class="selected-indicator">✓</div>
+            }
+          </div>
+        </div>
+
+        <!-- Columna central - Bebidas preview -->
+        <div class="center-column">
+          <div class="image-item large">
+            <img src="../bebidas.jpg"
+                 alt="Bebidas {{ selectedType }}">
+            <div class="burger-type">Bebidas</div>
+          </div>
+        </div>
+
+        <!-- Columna derecha - Más bebidas -->
+        <div class="right-column">
+          <div class="image-item" 
+               [class.selected]="isBebidaSelected('agua')"
+               (click)="toggleBebida('agua')">
+            <img src="../aguamineral.jpg" alt="Agua">
+            <div class="ingredient-name">agua mineral</div>
+            @if (isBebidaSelected('agua')) {
+              <div class="selected-indicator">✓</div>
+            }
+          </div>
+          
+          <div class="image-item" 
+               [class.selected]="isBebidaSelected('jugo_naranja')"
+               (click)="toggleBebida('jugo_naranja')">
+            <img src="../aguasavori.jpg" alt="Jugo de Naranja">
+            <div class="ingredient-name"></div>
+            @if (isBebidaSelected('jugo_naranja')) {
+              <div class="selected-indicator">✓</div>
+            }
+          </div>
+          
+          <div class="image-item" 
+               [class.selected]="isBebidaSelected('te_helado')"
+               (click)="toggleBebida('te_helado')">
+            <img src="../manaosdeuva.jpg" alt="Té Helado">
+            <div class="ingredient-name"></div>
+            @if (isBebidaSelected('te_helado')) {
+              <div class="selected-indicator">✓</div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Botones de finalización -->
+      <div class="continue-section">
+        @if (canContinueFromBebidas()) {
+          <button class="continue-button" (click)="continueFromBebidas()">
+            Finalizar con {{ getSelectedBebidasCount() }} bebidas
+            <span class="arrow">✓</span>
+          </button>
+        }
+        
+        <button class="continue-button skip-button" (click)="skipBebidas()">
+          Finalizar sin bebidas
+          <span class="arrow">✓</span>
+        </button>
+
+        <!-- Botón de WhatsApp con la misma estética -->
+        <a [href]="getWhatsAppUrl()" 
+           target="_blank" 
+           class="continue-button whatsapp-button">
+          Enviar por WhatsApp
+          <span class="arrow">📱</span>
+        </a>
+      </div>
+
+      @if (!canContinueFromBebidas()) {
+        <div class="no-selection-message">
+          <p>Selecciona bebidas o continúa sin ellas</p>
+        </div>
+      }
+    }
+  </div>
+</div>
